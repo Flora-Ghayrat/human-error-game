@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#ff9568">
+
+  <meta
+    name="description"
+    content="学習するAIから、人間だけの表現を守る協力型お絵描きゲーム。"
+  >
+
+  <title>HUMAN ERROR</title>
+
+  <link rel="stylesheet" href="../frontend/style.css">
+</head>
+
+<body>
+  <!-- 背景のドット模様 -->
+  <div class="dots" aria-hidden="true"></div>
+
+  <!-- ================================
+       ヘッダー
+  ================================= -->
+  <header class="topbar">
+    <a class="logo" href="#" aria-label="Human Error ホーム">
+      <span class="logo-eyes" aria-hidden="true">
+        <i></i>
+        <i></i>
+      </span>
+
+      <strong>
+        HUMAN<br>
+        ERROR
+      </strong>
+    </a>
+
+    <div class="room-code" aria-label="ルームコード DEMO">
+      <small>ROOM</small>
+      <strong>DEMO</strong>
+    </div>
+
+    <button
+      id="sound-button"
+      class="square-button"
+      type="button"
+      aria-label="サウンドを切り替える"
+      aria-pressed="false"
+    >
+      ♪
+    </button>
+  </header>
+
+  <!-- ================================
+       メイン画面
+  ================================= -->
+  <main class="game-shell">
+
+    <!-- タイトル -->
+    <section class="game-title">
+      <div>
+        <p class="kicker">
+          HUMANS
+          <strong>VS</strong>
+          LEARNING MACHINE
+        </p>
+
+        <h1>
+          <span>AIの記憶から</span><br>
+          はみ出して描け。
+        </h1>
+      </div>
+
+      <div class="round-status" aria-live="polite">
+        <small id="phase-label">準備中</small>
+        <strong id="round-label">ROUND 00</strong>
+      </div>
+    </section>
+
+    <!-- ================================
+         ゲームエリア
+    ================================= -->
+    <section class="game-layout" aria-label="ゲーム画面">
+
+      <!-- ================================
+           左側：お絵描き画面
+      ================================= -->
+      <section class="paper-card drawing-card">
+        <span
+          class="paper-tape paper-tape-left"
+          aria-hidden="true"
+        ></span>
+
+        <span
+          class="paper-tape paper-tape-right"
+          aria-hidden="true"
+        ></span>
+
+        <!-- お題とタイマー -->
+        <div class="prompt-bar">
+
+          <!-- 秘密のお題 -->
+          <div class="secret-word-area">
+            <small class="english-label">
+              SECRET WORD
+            </small>
+
+            <div class="secret-word-line">
+              <strong id="secret-word">
+                ？？？？
+              </strong>
+
+              <button
+                id="reveal-word-button"
+                class="text-button"
+                type="button"
+                aria-pressed="false"
+              >
+                見る
+              </button>
+            </div>
+          </div>
+
+          <!-- タイマー -->
+          <div
+            id="timer"
+            class="timer"
+            aria-label="残り時間60秒"
+          >
+            <span class="timer-icon" aria-hidden="true">
+              ◷
+            </span>
+
+            <strong id="timer-seconds">
+              60
+            </strong>
+
+            <small>SEC</small>
+          </div>
+        </div>
+
+        <!-- ================================
+             Canvas
+        ================================= -->
+        <div id="canvas-container" class="canvas-container">
+          <canvas
+            id="drawing-canvas"
+            width="1000"
+            height="650"
+            tabindex="0"
+            aria-label="お絵描きキャンバス"
+          ></canvas>
+
+          <!-- まだ何も描いていないときの説明 -->
+          <div class="canvas-empty-message" aria-hidden="true">
+            <strong>ここに描こう</strong>
+
+            <span>
+              人間にはわかる。<br class="mobile-only">
+              でもAIにはわからないように。
+            </span>
+          </div>
+
+          <!-- 時間切れ表示 -->
+          <div id="time-up-screen" class="time-up-screen" hidden>
+            <small>TIME</small>
+            <strong>UP!</strong>
+          </div>
+        </div>
+
+        <!-- ================================
+             描画ツール
+        ================================= -->
+        <div class="drawing-tools" aria-label="描画ツール">
+
+          <!-- 色 -->
+          <div
+            id="color-tools"
+            class="tool-group"
+            role="group"
+            aria-label="線の色"
+          >
+            <button
+              class="color-button active"
+              type="button"
+              data-color="#241331"
+              style="--button-color: #241331"
+              aria-label="濃い紫"
+              aria-pressed="true"
+            ></button>
+
+            <button
+              class="color-button"
+              type="button"
+              data-color="#ff5c5c"
+              style="--button-color: #ff5c5c"
+              aria-label="赤"
+              aria-pressed="false"
+            ></button>
+
+            <button
+              class="color-button"
+              type="button"
+              data-color="#3978f6"
+              style="--button-color: #3978f6"
+              aria-label="青"
+              aria-pressed="false"
+            ></button>
+
+            <button
+              class="color-button"
+              type="button"
+              data-color="#ffc92f"
+              style="--button-color: #ffc92f"
+              aria-label="黄"
+              aria-pressed="false"
+            ></button>
+          </div>
+
+          <span class="tool-separator" aria-hidden="true"></span>
+
+          <!-- 線の太さ -->
+          <div
+            id="size-tools"
+            class="tool-group"
+            role="group"
+            aria-label="線の太さ"
+          >
+            <button
+              class="tool-button size-button"
+              type="button"
+              data-size="5"
+              aria-label="細い線"
+              aria-pressed="false"
+            >
+              <i class="brush-dot brush-dot-small"></i>
+            </button>
+
+            <button
+              class="tool-button size-button active"
+              type="button"
+              data-size="11"
+              aria-label="普通の線"
+              aria-pressed="true"
+            >
+              <i class="brush-dot brush-dot-medium"></i>
+            </button>
+
+            <button
+              class="tool-button size-button"
+              type="button"
+              data-size="22"
+              aria-label="太い線"
+              aria-pressed="false"
+            >
+              <i class="brush-dot brush-dot-large"></i>
+            </button>
+          </div>
+
+          <span class="tool-separator" aria-hidden="true"></span>
+
+          <!-- 消しゴム -->
+          <button
+            id="eraser-button"
+            class="tool-button"
+            type="button"
+            aria-label="消しゴム"
+            aria-pressed="false"
+          >
+            消
+          </button>
+
+          <!-- 一つ戻す -->
+          <button
+            id="undo-button"
+            class="tool-button"
+            type="button"
+            aria-label="一つ前の状態に戻す"
+          >
+            ↶
+          </button>
+
+          <!-- 全部消す -->
+          <button
+            id="clear-button"
+            class="tool-button clear-button"
+            type="button"
+            aria-label="絵を全部消す"
+          >
+            ×
+          </button>
+        </div>
+      </section>
+
+      <!-- ================================
+           右側：ゲーム操作
+      ================================= -->
+      <aside class="side-panel">
+
+        <!-- AI記憶 -->
+        <section
+          class="paper-card ai-memory-card"
+          aria-labelledby="ai-memory-title"
+        >
+          <!-- AIの目 -->
+          <div class="ai-eyes" aria-hidden="true">
+            <i></i>
+            <i></i>
+          </div>
+
+          <div class="ai-memory-heading">
+            <div>
+              <small class="english-label">
+                ADAPTIVE AI
+              </small>
+
+              <h2 id="ai-memory-title">
+                AIの記憶
+              </h2>
+            </div>
+
+            <strong id="memory-percent">
+              12%
+            </strong>
+          </div>
+
+          <!-- AI記憶メーター -->
+          <div
+            class="memory-meter"
+            role="progressbar"
+            aria-label="AIの記憶量"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="12"
+          >
+            <i id="memory-meter-fill"></i>
+          </div>
+
+          <p id="ai-memory-message">
+            まだこの表現を知りません。
+            今なら、だませるかも。
+          </p>
+
+          <dl class="memory-information">
+            <div>
+              <dt>遭遇回数</dt>
+              <dd id="encounter-count">00</dd>
+            </div>
+
+            <div>
+              <dt>覚えたヒント</dt>
+              <dd id="learned-clue-count">00</dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- ================================
+             ラウンド開始
+        ================================= -->
+        <section
+          class="paper-card form-card"
+          aria-labelledby="start-round-title"
+        >
+          <span class="section-number" aria-hidden="true">
+            01
+          </span>
+
+          <small class="english-label">
+            START A ROUND
+          </small>
+
+          <h2 id="start-round-title">
+            お題をセット
+          </h2>
+
+          <label for="word-input">
+            描き手だけが見ます
+          </label>
+
+          <div class="input-frame">
+            <input
+              id="word-input"
+              type="text"
+              value="ねこ"
+              maxlength="40"
+              autocomplete="off"
+            >
+
+            <span aria-hidden="true">
+              ✦
+            </span>
+          </div>
+
+          <button
+            id="start-round-button"
+            class="action-button"
+            type="button"
+          >
+            <span>ラウンド開始</span>
+            <strong aria-hidden="true">→</strong>
+          </button>
+        </section>
+
+        <!-- ================================
+             答え合わせ
+        ================================= -->
+        <section
+          class="paper-card form-card"
+          aria-labelledby="check-answer-title"
+        >
+          <span class="section-number" aria-hidden="true">
+            02
+          </span>
+
+          <small class="english-label">
+            CHECK THE ANSWER
+          </small>
+
+          <h2 id="check-answer-title">
+            答え合わせ
+          </h2>
+
+          <label for="human-answer-input">
+            人間チームの答え
+          </label>
+
+          <div class="input-frame">
+            <input
+              id="human-answer-input"
+              type="text"
+              placeholder="例：ねこ"
+              autocomplete="off"
+            >
+
+            <span aria-hidden="true">
+              ?
+            </span>
+          </div>
+
+          <label for="drawing-clues-input">
+            絵に使ったヒント
+          </label>
+
+          <div class="input-frame">
+            <input
+              id="drawing-clues-input"
+              type="text"
+              placeholder="箱、ひげ、魚"
+              autocomplete="off"
+            >
+
+            <span aria-hidden="true">
+              ＋
+            </span>
+          </div>
+
+          <button
+            id="finish-round-button"
+            class="action-button dark-action-button"
+            type="button"
+            disabled
+          >
+            <span>AIと答え合わせ</span>
+            <strong aria-hidden="true">→</strong>
+          </button>
+        </section>
+      </aside>
+    </section>
+
+    <!-- ================================
+         結果画面
+    ================================= -->
+    <section
+      id="result-panel"
+      class="paper-card result-panel"
+      aria-live="polite"
+      hidden
+    >
+      <strong id="result-mark" class="result-mark">
+        !
+      </strong>
+
+      <div class="result-message">
+        <small class="english-label">
+          ROUND RESULT
+        </small>
+
+        <h2 id="result-title">
+          判定結果
+        </h2>
+
+        <p id="result-description"></p>
+      </div>
+
+      <div class="result-comparison">
+        <div>
+          <small>HUMAN</small>
+          <strong id="result-human-answer">—</strong>
+        </div>
+
+        <div>
+          <small>AI</small>
+          <strong id="result-ai-answer">—</strong>
+          <span id="result-ai-confidence"></span>
+        </div>
+
+        <div>
+          <small>LEARNED</small>
+          <strong id="result-learned-clues">—</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================================
+       フッター
+  ================================= -->
+  <footer>
+    <strong>PROTOTYPE 01</strong>
+
+    <span>
+      同じ描き方は、二度通用しない。
+    </span>
+
+    <strong>
+      SUBAT × FLORA
+    </strong>
+  </footer>
+
+  <script src="../frontend/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1645 @@
+/* =========================================================
+   HUMAN ERROR
+   Main visual stylesheet
+
+   Color direction:
+   - Orange background
+   - Dark purple outlines
+   - White paper panels
+   - Yellow AI elements
+========================================================= */
+
+/* Google Fonts */
+@import url(
+  "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Noto+Sans+JP:wght@500;700;900&display=swap"
+);
+
+
+/* =========================================================
+   1. Global design variables
+========================================================= */
+
+:root {
+  color-scheme: light;
+
+  --color-ink: #241331;
+  --color-paper: #fffdf7;
+  --color-orange: #ff9568;
+  --color-yellow: #f7eb56;
+  --color-blue: #3978f6;
+  --color-red: #ff5c5c;
+  --color-white: #ffffff;
+  --color-muted: #948a99;
+
+  --border-thick: 4px solid var(--color-ink);
+  --border-medium: 3px solid var(--color-ink);
+
+  --hard-shadow:
+    7px 7px 0 var(--color-ink);
+
+  --small-shadow:
+    4px 4px 0 var(--color-ink);
+
+  --font-main:
+    "Noto Sans JP",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+
+  --font-code:
+    "IBM Plex Mono",
+    "Courier New",
+    monospace;
+
+  font-family: var(--font-main);
+  color: var(--color-ink);
+  background-color: var(--color-orange);
+}
+
+
+/* =========================================================
+   2. Basic reset
+========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background-color: var(--color-orange);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: transparent;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+canvas {
+  max-width: 100%;
+}
+
+
+/* Keyboard focus */
+
+button:focus-visible,
+input:focus-visible,
+canvas:focus-visible,
+a:focus-visible {
+  outline: 4px solid var(--color-blue);
+  outline-offset: 4px;
+}
+
+
+/* =========================================================
+   3. Background dots
+========================================================= */
+
+.dots {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  opacity: 0.18;
+
+  background-image:
+    radial-gradient(
+      var(--color-ink) 0.8px,
+      transparent 0.8px
+    );
+
+  background-size: 8px 8px;
+}
+
+
+/* =========================================================
+   4. Header
+========================================================= */
+
+.topbar {
+  min-height: 110px;
+  padding:
+    18px
+    clamp(18px, 4vw, 64px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  border-bottom: var(--border-thick);
+}
+
+
+/* Logo */
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.logo > strong {
+  font-family: var(--font-code);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+}
+
+
+/* Logo eye box */
+
+.logo-eyes {
+  width: 62px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  background-color: var(--color-ink);
+  border: 3px solid var(--color-ink);
+}
+
+.logo-eyes i {
+  position: relative;
+
+  width: 20px;
+  height: 26px;
+
+  display: block;
+
+  background-color: var(--color-paper);
+  border-radius: 50%;
+}
+
+.logo-eyes i::after {
+  content: "";
+
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+
+  width: 8px;
+  height: 8px;
+
+  background-color: var(--color-orange);
+  border-radius: 50%;
+}
+
+
+/* Room code */
+
+.room-code {
+  display: flex;
+  align-items: stretch;
+
+  background-color: var(--color-paper);
+  border: var(--border-medium);
+  box-shadow: var(--small-shadow);
+
+  font-family: var(--font-code);
+
+  transform: rotate(-1deg);
+}
+
+.room-code small {
+  display: grid;
+  place-items: center;
+
+  padding: 8px 10px;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.room-code strong {
+  display: grid;
+  place-items: center;
+
+  padding: 7px 13px;
+
+  color: var(--color-paper);
+  background-color: var(--color-ink);
+
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+}
+
+
+/* Square sound button */
+
+.square-button {
+  width: 48px;
+  height: 48px;
+
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  background-color: var(--color-yellow);
+  border: var(--border-medium);
+  box-shadow: 3px 3px 0 var(--color-ink);
+
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.square-button:hover {
+  background-color: var(--color-paper);
+}
+
+.square-button:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   5. Main layout
+========================================================= */
+
+.game-shell {
+  width:
+    min(
+      1440px,
+      calc(100% - 40px)
+    );
+
+  margin: 0 auto;
+  padding: 54px 0 76px;
+}
+
+
+/* =========================================================
+   6. Main game title
+========================================================= */
+
+.game-title {
+  margin-bottom: 34px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.kicker {
+  margin: 0 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.15em;
+}
+
+.kicker strong {
+  padding: 2px 7px;
+
+  color: var(--color-paper);
+  background-color: var(--color-ink);
+}
+
+.game-title h1 {
+  margin: 0;
+
+  font-size:
+    clamp(
+      2.7rem,
+      5.7vw,
+      6rem
+    );
+
+  font-weight: 900;
+  line-height: 0.91;
+  letter-spacing: -0.075em;
+}
+
+.game-title h1 span {
+  color: var(--color-paper);
+
+  -webkit-text-stroke:
+    2px var(--color-ink);
+
+  text-shadow:
+    3px 3px 0 var(--color-ink);
+}
+
+
+/* Round state */
+
+.round-status {
+  flex: 0 0 auto;
+
+  text-align: right;
+  font-family: var(--font-code);
+}
+
+.round-status small {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.round-status strong {
+  display: block;
+
+  padding-top: 7px;
+
+  border-top: 3px solid var(--color-ink);
+
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   7. Main game columns
+========================================================= */
+
+.game-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 2.15fr)
+    minmax(315px, 0.85fr);
+
+  gap: 26px;
+  align-items: start;
+}
+
+
+/* =========================================================
+   8. Reusable paper card
+========================================================= */
+
+.paper-card {
+  position: relative;
+
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+
+  border: var(--border-thick);
+  box-shadow: var(--hard-shadow);
+}
+
+
+/* =========================================================
+   9. Drawing card
+========================================================= */
+
+.drawing-card {
+  padding: 20px;
+}
+
+
+/* Decorative tape */
+
+.paper-tape {
+  position: absolute;
+  top: -15px;
+  z-index: 2;
+
+  width: 72px;
+  height: 28px;
+
+  display: block;
+
+  background-color: var(--color-yellow);
+  border: var(--border-medium);
+
+  opacity: 0.94;
+}
+
+.paper-tape-left {
+  left: 8%;
+  transform: rotate(-4deg);
+}
+
+.paper-tape-right {
+  right: 8%;
+  transform: rotate(3deg);
+}
+
+
+/* =========================================================
+   10. Prompt and timer
+========================================================= */
+
+.prompt-bar {
+  padding: 8px 3px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.secret-word-area {
+  min-width: 0;
+}
+
+.english-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.15em;
+}
+
+.secret-word-line {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+#secret-word {
+  min-width: 5.5em;
+  max-width: 16em;
+
+  overflow: hidden;
+
+  font-size:
+    clamp(
+      1.45rem,
+      3vw,
+      2.4rem
+    );
+
+  font-weight: 900;
+  letter-spacing: 0.12em;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+/* Reveal word button */
+
+.text-button {
+  padding: 2px 0;
+
+  color: var(--color-ink);
+  background: none;
+
+  border: 0;
+  border-bottom: 2px solid var(--color-ink);
+
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.text-button:hover {
+  color: var(--color-blue);
+  border-bottom-color: var(--color-blue);
+}
+
+
+/* Timer */
+
+.timer {
+  min-width: 108px;
+
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.timer-icon {
+  margin-right: 3px;
+
+  font-family: var(--font-code);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.timer strong {
+  font-family: var(--font-code);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.timer small {
+  font-family: var(--font-code);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+
+/* Added by JavaScript during final ten seconds */
+
+.timer.is-warning {
+  color: var(--color-red);
+
+  animation:
+    timer-warning
+    0.7s
+    steps(2)
+    infinite;
+}
+
+
+/* =========================================================
+   11. Drawing canvas
+========================================================= */
+
+.canvas-container {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 20 / 13;
+
+  overflow: hidden;
+
+  background-color: var(--color-white);
+  border: var(--border-thick);
+}
+
+#drawing-canvas {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  background-color: var(--color-white);
+
+  cursor: crosshair;
+  touch-action: none;
+}
+
+
+/* Empty canvas message */
+
+.canvas-empty-message {
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  place-content: center;
+
+  padding: 24px;
+
+  color: var(--color-muted);
+
+  text-align: center;
+
+  pointer-events: none;
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.canvas-empty-message strong {
+  display: block;
+
+  font-size:
+    clamp(
+      1.4rem,
+      3vw,
+      2.3rem
+    );
+
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.canvas-empty-message span {
+  display: block;
+
+  margin-top: 7px;
+
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+
+/*
+  app.js will add the class "has-drawing"
+  after the player starts drawing.
+*/
+
+.canvas-container.has-drawing
+.canvas-empty-message {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+
+/* Time-up overlay */
+
+.time-up-screen {
+  position: absolute;
+  inset: 0;
+
+  color: var(--color-yellow);
+  background-color: rgba(36, 19, 49, 0.94);
+
+  text-align: center;
+
+  transform: rotate(-1deg);
+}
+
+.time-up-screen:not([hidden]) {
+  display: grid;
+  place-content: center;
+
+  animation:
+    time-up-entrance
+    350ms
+    cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+
+.time-up-screen small {
+  font-family: var(--font-code);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+}
+
+.time-up-screen strong {
+  font-family: var(--font-code);
+
+  font-size:
+    clamp(
+      4rem,
+      12vw,
+      9rem
+    );
+
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.1em;
+}
+
+
+/* =========================================================
+   12. Drawing tools
+========================================================= */
+
+.drawing-tools {
+  padding-top: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tool-separator {
+  width: 2px;
+  height: 31px;
+
+  margin: 0 3px;
+
+  display: block;
+
+  background-color: var(--color-ink);
+
+  opacity: 0.25;
+}
+
+
+/* Shared tool button */
+
+.tool-button {
+  width: 39px;
+  height: 39px;
+
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  background-color: var(--color-paper);
+  border: var(--border-medium);
+
+  font-family: var(--font-code);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.tool-button:hover {
+  background-color: var(--color-yellow);
+}
+
+
+/* Color selection */
+
+.color-button {
+  width: 39px;
+  height: 39px;
+
+  padding: 0;
+
+  background-color: var(--button-color);
+
+  border: var(--border-medium);
+  border-radius: 50%;
+}
+
+.color-button:hover {
+  transform: scale(1.08);
+}
+
+
+/* Active tool */
+
+.color-button.active,
+.tool-button.active {
+  box-shadow:
+    0 0 0 3px var(--color-paper),
+    0 0 0 6px var(--color-ink);
+
+  transform: scale(0.82);
+}
+
+
+/* Brush size dots */
+
+.brush-dot {
+  display: block;
+
+  background-color: var(--color-ink);
+  border-radius: 50%;
+}
+
+.brush-dot-small {
+  width: 5px;
+  height: 5px;
+}
+
+.brush-dot-medium {
+  width: 10px;
+  height: 10px;
+}
+
+.brush-dot-large {
+  width: 17px;
+  height: 17px;
+}
+
+
+/* Clear button */
+
+.clear-button {
+  color: var(--color-paper);
+  background-color: var(--color-red);
+}
+
+.clear-button:hover {
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+}
+
+
+/* =========================================================
+   13. Right side panel
+========================================================= */
+
+.side-panel {
+  display: grid;
+  gap: 22px;
+}
+
+
+/* =========================================================
+   14. AI memory card
+========================================================= */
+
+.ai-memory-card {
+  padding: 22px;
+
+  background-color: var(--color-yellow);
+}
+
+
+/* AI eyes */
+
+.ai-eyes {
+  position: absolute;
+  top: -32px;
+  right: 18px;
+
+  height: 56px;
+
+  padding: 7px 9px 0;
+
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+
+  background-color: var(--color-ink);
+  border: 3px solid var(--color-ink);
+}
+
+.ai-eyes i {
+  position: relative;
+
+  width: 31px;
+  height: 41px;
+
+  display: block;
+
+  background-color: var(--color-paper);
+  border-radius: 50% 50% 4px 4px;
+}
+
+.ai-eyes i::after {
+  content: "";
+
+  position: absolute;
+  right: 4px;
+  bottom: 5px;
+
+  width: 11px;
+  height: 15px;
+
+  background-color: var(--color-ink);
+  border-radius: 50%;
+}
+
+
+/* AI card heading */
+
+.ai-memory-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ai-memory-heading h2 {
+  margin: 0;
+
+  font-size: 1.65rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+
+#memory-percent {
+  font-family: var(--font-code);
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+
+/* AI memory progress bar */
+
+.memory-meter {
+  height: 18px;
+
+  margin: 18px 0;
+  padding: 2px;
+
+  background-color: var(--color-paper);
+  border: var(--border-medium);
+}
+
+#memory-meter-fill {
+  width: 12%;
+  height: 100%;
+
+  display: block;
+
+  background-color: var(--color-blue);
+
+  transition:
+    width
+    550ms
+    cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
+/* AI text */
+
+#ai-memory-message {
+  min-height: 3.5em;
+
+  margin: 0 0 18px;
+
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+
+/* AI statistics */
+
+.memory-information {
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.memory-information > div {
+  padding-top: 8px;
+
+  border-top: 2px solid var(--color-ink);
+}
+
+.memory-information dt {
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.memory-information dd {
+  margin: 2px 0 0;
+
+  font-family: var(--font-code);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   15. Form cards
+========================================================= */
+
+.form-card {
+  padding: 22px;
+
+  overflow: hidden;
+}
+
+.form-card h2 {
+  margin: 0;
+
+  font-size: 1.65rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+}
+
+
+/* Decorative section number */
+
+.section-number {
+  position: absolute;
+  top: -12px;
+  right: -4px;
+
+  color: transparent;
+
+  font-family: var(--font-code);
+  font-size: 4.2rem;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 0.8;
+
+  opacity: 0.16;
+
+  -webkit-text-stroke:
+    2px var(--color-ink);
+}
+
+
+/* Form labels */
+
+.form-card label {
+  margin: 18px 0 7px;
+
+  display: block;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+
+/* Framed input */
+
+.input-frame {
+  display: flex;
+
+  background-color: var(--color-white);
+  border: var(--border-medium);
+}
+
+.input-frame input {
+  min-width: 0;
+  flex: 1;
+
+  padding: 12px 13px;
+
+  color: var(--color-ink);
+  background-color: transparent;
+
+  border: 0;
+
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.input-frame input::placeholder {
+  color: #9c929f;
+}
+
+.input-frame input:focus {
+  outline: none;
+}
+
+.input-frame span {
+  width: 42px;
+
+  display: grid;
+  place-items: center;
+
+  background-color: var(--color-yellow);
+  border-left: var(--border-medium);
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   16. Main action buttons
+========================================================= */
+
+.action-button {
+  width: 100%;
+
+  margin-top: 17px;
+  padding: 0;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+
+  color: var(--color-ink);
+  background-color: var(--color-orange);
+
+  border: var(--border-medium);
+  box-shadow: var(--small-shadow);
+
+  font-weight: 900;
+}
+
+.action-button > span {
+  padding: 12px 14px;
+}
+
+.action-button > strong {
+  width: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-left: var(--border-medium);
+
+  font-size: 1.3rem;
+}
+
+.action-button:hover:not(:disabled) {
+  background-color: var(--color-yellow);
+}
+
+.action-button:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.action-button:disabled {
+  opacity: 0.35;
+}
+
+
+/* Dark action button */
+
+.dark-action-button {
+  color: var(--color-paper);
+  background-color: var(--color-ink);
+}
+
+.dark-action-button > strong {
+  border-left-color: var(--color-paper);
+}
+
+.dark-action-button:hover:not(:disabled) {
+  color: var(--color-ink);
+  background-color: var(--color-yellow);
+}
+
+.dark-action-button:hover:not(:disabled) > strong {
+  border-left-color: var(--color-ink);
+}
+
+
+/* =========================================================
+   17. Result panel
+========================================================= */
+
+.result-panel {
+  margin-top: 28px;
+  padding: 25px;
+
+  grid-template-columns:
+    85px
+    minmax(220px, 0.75fr)
+    minmax(0, 1.4fr);
+
+  align-items: center;
+  gap: 24px;
+
+  background-color: var(--color-yellow);
+}
+
+.result-panel:not([hidden]) {
+  display: grid;
+
+  animation:
+    result-entrance
+    450ms
+    ease-out;
+}
+
+
+/*
+  JavaScript adds this class when AI wins.
+*/
+
+.result-panel.ai-winner {
+  background-color: var(--color-red);
+}
+
+
+/* Result symbol */
+
+.result-mark {
+  width: 72px;
+  height: 72px;
+
+  display: grid;
+  place-items: center;
+
+  background-color: var(--color-paper);
+  border: var(--border-thick);
+  border-radius: 50%;
+
+  font-family: var(--font-code);
+  font-size: 2.8rem;
+  font-weight: 700;
+}
+
+
+/* Result message */
+
+.result-message h2 {
+  margin: 0 0 7px;
+
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.result-message p {
+  margin: 0;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+
+/* Human / AI comparison */
+
+.result-comparison {
+  display: grid;
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  background-color: var(--color-paper);
+  border: var(--border-medium);
+}
+
+.result-comparison > div {
+  min-width: 0;
+
+  padding: 13px;
+
+  border-right: var(--border-medium);
+}
+
+.result-comparison > div:last-child {
+  border-right: 0;
+}
+
+.result-comparison small {
+  display: block;
+
+  font-family: var(--font-code);
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.result-comparison strong {
+  margin-top: 5px;
+
+  display: block;
+
+  overflow-wrap: anywhere;
+
+  font-size: 1rem;
+}
+
+.result-comparison span {
+  margin-top: 3px;
+
+  display: block;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   18. Footer
+========================================================= */
+
+footer {
+  padding:
+    22px
+    clamp(18px, 4vw, 64px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+
+  border-top: var(--border-thick);
+
+  font-family: var(--font-code);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+footer span {
+  font-family: var(--font-main);
+  letter-spacing: 0;
+}
+
+
+/* Only used for intentional mobile line breaks */
+
+.mobile-only {
+  display: none;
+}
+
+
+/* =========================================================
+   19. Animations
+========================================================= */
+
+@keyframes timer-warning {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes time-up-entrance {
+  from {
+    opacity: 0;
+    transform:
+      scale(2)
+      rotate(8deg);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      scale(1)
+      rotate(-1deg);
+  }
+}
+
+@keyframes result-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   20. Tablet layout
+========================================================= */
+
+@media (max-width: 980px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side-panel {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .ai-memory-card {
+    grid-column: 1 / -1;
+  }
+
+  .result-panel {
+    grid-template-columns:
+      70px
+      1fr;
+  }
+
+  .result-comparison {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* =========================================================
+   21. Smartphone layout
+========================================================= */
+
+@media (max-width: 640px) {
+  .topbar {
+    min-height: 86px;
+    padding: 13px 16px;
+  }
+
+  .logo-eyes {
+    width: 49px;
+    height: 45px;
+  }
+
+  .logo-eyes i {
+    width: 16px;
+    height: 21px;
+  }
+
+  .logo > strong {
+    font-size: 0.85rem;
+  }
+
+  .room-code {
+    display: none;
+  }
+
+  .game-shell {
+    width: calc(100% - 24px);
+    padding: 35px 0 55px;
+  }
+
+  .game-title {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .game-title h1 {
+    font-size:
+      clamp(
+        2.35rem,
+        12.8vw,
+        4rem
+      );
+  }
+
+  .round-status {
+    margin-top: 25px;
+  }
+
+  .round-status small {
+    font-size: 0.62rem;
+  }
+
+  .round-status strong {
+    font-size: 0.92rem;
+  }
+
+  .drawing-card {
+    padding: 12px;
+  }
+
+  .prompt-bar {
+    align-items: flex-end;
+  }
+
+  #secret-word {
+    min-width: 4.5em;
+    font-size: 1.25rem;
+  }
+
+  .timer {
+    min-width: 84px;
+  }
+
+  .timer-icon {
+    font-size: 1rem;
+  }
+
+  .timer strong {
+    font-size: 1.9rem;
+  }
+
+  /*
+    On phones, a vertical canvas is more comfortable
+    for finger drawing.
+  */
+
+  .canvas-container {
+    aspect-ratio: 4 / 5;
+  }
+
+  .canvas-empty-message span {
+    max-width: 220px;
+  }
+
+  .mobile-only {
+    display: inline;
+  }
+
+  .drawing-tools {
+    gap: 6px;
+  }
+
+  .tool-separator {
+    display: none;
+  }
+
+  .color-button,
+  .tool-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .side-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-memory-card {
+    grid-column: auto;
+  }
+
+  .result-panel {
+    grid-template-columns:
+      55px
+      1fr;
+
+    gap: 15px;
+    padding: 17px;
+  }
+
+  .result-mark {
+    width: 52px;
+    height: 52px;
+
+    font-size: 2rem;
+  }
+
+  .result-message h2 {
+    font-size: 1.45rem;
+  }
+
+  .result-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .result-comparison > div {
+    border-right: 0;
+    border-bottom: var(--border-medium);
+  }
+
+  .result-comparison > div:last-child {
+    border-bottom: 0;
+  }
+
+  footer {
+    align-items: flex-start;
+  }
+
+  footer span {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   22. Very small smartphones
+========================================================= */
+
+@media (max-width: 390px) {
+  .square-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .game-title h1 {
+    font-size: 2.25rem;
+  }
+
+  .round-status strong {
+    font-size: 0.78rem;
+  }
+
+  .prompt-bar {
+    gap: 8px;
+  }
+
+  #secret-word {
+    font-size: 1.05rem;
+  }
+
+  .timer strong {
+    font-size: 1.55rem;
+  }
+
+  .drawing-tools {
+    justify-content: flex-start;
+  }
+
+  .ai-memory-card,
+  .form-card {
+    padding: 18px;
+  }
+}
+
+
+/* =========================================================
+   23. Reduced-motion accessibility
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
